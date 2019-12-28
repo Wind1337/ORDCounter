@@ -1,4 +1,11 @@
 <resources>
     <string name="app_name">ORD Counter</string>
     <string name="action_settings">Settings</string>
+
+    <!--content_main.xml-->
+    <string name="daysToOrd">Days to ORD</string>
+
+    <!--MainActivity.kt-->
+    <string name="notset">Not Set</string>
+    <string name="title_activity_settings">Settings</string>
 </resources>
