@@ -1,7 +1,6 @@
 package wind07.ordcounter
 
 import android.os.Bundle
-import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 
 import kotlinx.android.synthetic.main.activity_settings.*
@@ -12,7 +11,9 @@ class Settings : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
         setSupportActionBar(toolbar)
-
+        supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.fragment_settings, SettingsFragment())
+            .commit()
     }
-
 }
