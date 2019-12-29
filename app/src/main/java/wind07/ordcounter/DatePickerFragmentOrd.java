@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.DatePicker;
 
 import androidx.fragment.app.DialogFragment;
@@ -14,16 +15,18 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Calendar;
 import java.util.Objects;
 
-public class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
+public class DatePickerFragmentOrd extends DialogFragment implements DatePickerDialog.OnDateSetListener {
     @NotNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         int year;
         int month;
         int day;
+        String date;
         SharedPreferences sharedPref = getActivity().getSharedPreferences("wind07.ordcounter", 0);
-        String orddate = sharedPref.getString("orddate", null);
-        if (orddate == null) {
+        date = sharedPref.getString("orddate", null);
+
+        if (date == null) {
             // Use the current date as the default date in the picker
             final Calendar c = Calendar.getInstance();
             year = c.get(Calendar.YEAR);
@@ -32,7 +35,7 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
         }
 
         else{
-            String [] dateParts = orddate.split("/");
+            String [] dateParts = date.split("/");
             day = Integer.parseInt(dateParts[0]);
             month = Integer.parseInt(dateParts[1]);
             month -= 1;
@@ -44,6 +47,8 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
     }
 
     public void onDateSet(DatePicker view, int year, int month, int day) {
+        SettingsFragment settingsFragment = new SettingsFragment();
+        String type = settingsFragment.type;
         month += 1;
         String date = (day + "/" + month + "/" + year);
         SharedPreferences sharedPref = getActivity().getSharedPreferences("wind07.ordcounter", 0);

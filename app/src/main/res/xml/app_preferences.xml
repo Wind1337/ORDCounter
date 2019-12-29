@@ -8,13 +8,16 @@
             app:title="Enable message notifications"/>
     </PreferenceCategory>
 
-    <PreferenceCategory app:title="ORD DATE">
+    <PreferenceCategory app:title="DATES">
+        <Preference
+            app:key="enlistdate"
+            app:summary="Select your enlistment date"
+            app:title="Enlistment Date"/>
         <Preference
             app:key="orddate"
             app:summary="Select your ORD Date"
             app:title="ORD Date" />
     </PreferenceCategory>
-
     <PreferenceCategory app:title="FEEDBACK">
         <Preference
             app:key="feedback"

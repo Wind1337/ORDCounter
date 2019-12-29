@@ -1,3 +1,7 @@
+@file:Suppress("RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS",
+    "NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS"
+)
+
 package wind07.ordcounter
 
 import android.content.Intent
@@ -12,6 +16,7 @@ import kotlinx.android.synthetic.main.content_main.*
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
+import kotlin.math.ceil
 
 
 class MainActivity : AppCompatActivity() {
@@ -22,6 +27,7 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
 
         calOrdDays()
+        calProgress()
 
         fab.setOnClickListener { view ->
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
@@ -32,6 +38,7 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         calOrdDays()
+        calProgress()
     }
 
     private fun calOrdDays (){
@@ -45,6 +52,24 @@ class MainActivity : AppCompatActivity() {
             val days = TimeUnit.DAYS.convert(format.parse(orddate).time - todaydate.time, TimeUnit.MILLISECONDS)
             numOrd.text = days.toString()
         }
+    }
+
+    private fun calProgress(){
+        val sharedPref: SharedPreferences = getSharedPreferences("wind07.ordcounter", 0)
+        val enlistdate = sharedPref.getString("enlistdate", null)
+        val todaydate = Date()
+        val orddate = sharedPref.getString("orddate", null)
+        if(orddate == null)
+            numOrd.text = getString(R.string.notset)
+        else{
+            val format = SimpleDateFormat("dd/MM/yyyy")
+            val ordDays = (TimeUnit.DAYS.convert(format.parse(orddate).time - todaydate.time, TimeUnit.MILLISECONDS)).toDouble()
+            val servicedays = (TimeUnit.DAYS.convert(format.parse(orddate).time - format.parse(enlistdate).time, TimeUnit.MILLISECONDS)).toDouble()
+            // To Do
+            val serviceprogress = (ceil(100 -((ordDays/servicedays) * 100))).toInt()
+            progressBar.progress = serviceprogress
+        }
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
