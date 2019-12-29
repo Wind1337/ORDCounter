@@ -9,6 +9,7 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_main.*
@@ -37,6 +38,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
+        errorNoDates.text = ""
         calOrdDays()
         calProgress()
     }
@@ -45,7 +47,10 @@ class MainActivity : AppCompatActivity() {
         val sharedPref: SharedPreferences = getSharedPreferences("wind07.ordcounter", 0)
         val orddate = sharedPref.getString("orddate", null)
         if(orddate == null)
+        {
             numOrd.text = getString(R.string.notset)
+            errorNoDates.text = "Click here to set enlistment and ORD dates"
+        }
         else{
             val todaydate = Date()
             val format = SimpleDateFormat("dd/MM/yyyy")
@@ -60,7 +65,10 @@ class MainActivity : AppCompatActivity() {
         val todaydate = Date()
         val orddate = sharedPref.getString("orddate", null)
         if(orddate == null)
+        {
             numOrd.text = getString(R.string.notset)
+            errorNoDates.text = "Click here to set enlistment and ORD dates"
+        }
         else{
             val format = SimpleDateFormat("dd/MM/yyyy")
             val ordDays = (TimeUnit.DAYS.convert(format.parse(orddate).time - todaydate.time, TimeUnit.MILLISECONDS)).toDouble()
@@ -92,5 +100,10 @@ class MainActivity : AppCompatActivity() {
         }
 
 
+    }
+
+    fun errorNoDates(view: View) {
+        val intent = Intent(this, Settings::class.java)
+        startActivity(intent)
     }
 }
