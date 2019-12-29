@@ -1,7 +1,7 @@
 package wind07.ordcounter
 
-import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -9,7 +9,9 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
+import java.text.SimpleDateFormat
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 
 class MainActivity : AppCompatActivity() {
@@ -18,16 +20,30 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
-        val pref = getSharedPreferences("wind07.ordcounter", Context.MODE_PRIVATE)
-        val orddate = pref.getString("orddate",null)
-        if(orddate == null)
-        {
-            numOrd.text = getString(R.string.notset)
-        }
+
+        calOrdDays()
 
         fab.setOnClickListener { view ->
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show()
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        calOrdDays()
+    }
+
+    private fun calOrdDays (){
+        val sharedPref: SharedPreferences = getSharedPreferences("wind07.ordcounter", 0)
+        val orddate = sharedPref.getString("orddate", null)
+        if(orddate == null)
+            numOrd.text = getString(R.string.notset)
+        else{
+            val todaydate = Date()
+            val format = SimpleDateFormat("dd/MM/yyyy")
+            val days = TimeUnit.DAYS.convert(format.parse(orddate).time - todaydate.time, TimeUnit.MILLISECONDS)
+            numOrd.text = days.toString()
         }
     }
 

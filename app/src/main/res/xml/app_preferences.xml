@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <PreferenceCategory app:title="NOTIFICATIONS">
         <SwitchPreferenceCompat
@@ -10,9 +11,8 @@
     <PreferenceCategory app:title="ORD DATE">
         <Preference
             app:key="orddate"
-            app:title="ORD Date"
             app:summary="Select your ORD Date"
-            />
+            app:title="ORD Date" />
     </PreferenceCategory>
 
     <PreferenceCategory app:title="FEEDBACK">
