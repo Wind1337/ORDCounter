@@ -4,6 +4,7 @@
 
 package wind07.ordcounter
 
+import android.animation.ObjectAnimator
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -75,7 +76,11 @@ class MainActivity : AppCompatActivity() {
             val servicedays = (TimeUnit.DAYS.convert(format.parse(orddate).time - format.parse(enlistdate).time, TimeUnit.MILLISECONDS)).toDouble()
             // To Do
             val serviceprogress = (ceil(100 -((ordDays/servicedays) * 100))).toInt()
-            progressBar.progress = serviceprogress
+            //progressBar.progress = serviceprogress
+            ObjectAnimator.ofInt(progressBar, "progress", serviceprogress)
+                .setDuration(600)
+                .start()
+            ordPercent.text = ("$serviceprogress% completed")
         }
 
     }
