@@ -74,9 +74,7 @@ class MainActivity : AppCompatActivity() {
             val format = SimpleDateFormat("dd/MM/yyyy")
             val ordDays = (TimeUnit.DAYS.convert(format.parse(orddate).time - todaydate.time, TimeUnit.MILLISECONDS)).toDouble()
             val servicedays = (TimeUnit.DAYS.convert(format.parse(orddate).time - format.parse(enlistdate).time, TimeUnit.MILLISECONDS)).toDouble()
-            // To Do
             val serviceprogress = (ceil(100 -((ordDays/servicedays) * 100))).toInt()
-            //progressBar.progress = serviceprogress
             ObjectAnimator.ofInt(progressBar, "progress", serviceprogress)
                 .setDuration(600)
                 .start()
