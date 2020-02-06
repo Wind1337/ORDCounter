@@ -14,5 +14,6 @@ public class Settings extends AppCompatActivity {
                 .beginTransaction()
                 .replace(R.id.fragment_settings, new SettingsFragment())
                 .commit();
+        
     }
 }

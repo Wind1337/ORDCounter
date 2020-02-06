@@ -1,5 +1,6 @@
 package wind07.ordcounter;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.DialogFragment;
@@ -13,6 +14,16 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         setPreferencesFromResource(R.xml.app_preferences, rootKey);
+        String buildNum = Integer.toString(BuildConfig.VERSION_CODE);
+        String versionNum = BuildConfig.VERSION_NAME;
+        Preference prefVerNum = findPreference("vernum");
+        if (prefVerNum != null) {
+            prefVerNum.setSummary(versionNum);
+        }
+        Preference prefBuildNum = findPreference("buildnum");
+        if (prefBuildNum != null) {
+            prefBuildNum.setSummary(buildNum);
+        }
 
         ordPrefListener();
         enlistPrefListener();
