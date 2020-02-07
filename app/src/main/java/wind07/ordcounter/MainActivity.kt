@@ -50,7 +50,7 @@ class MainActivity : AppCompatActivity() {
         if(orddate == null)
         {
             numOrd.text = getString(R.string.notset)
-            errorNoDates.text = "Click here to set enlistment and ORD dates"
+            errorNoDates.text = getString(R.string.no_date_set)
         }
         else{
             val todaydate = Date()
@@ -68,7 +68,7 @@ class MainActivity : AppCompatActivity() {
         if(orddate == null)
         {
             numOrd.text = getString(R.string.notset)
-            errorNoDates.text = "Click here to set enlistment and ORD dates"
+            errorNoDates.text = getString(R.string.no_date_set)
         }
         else{
             val format = SimpleDateFormat("dd/MM/yyyy")
