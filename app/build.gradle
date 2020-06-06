@@ -11,8 +11,8 @@ android {
         applicationId "wind07.ordcounter"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 2
-        versionName "1.0.0_r1"
+        versionCode 3
+        versionName "1.0.0_r2"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
