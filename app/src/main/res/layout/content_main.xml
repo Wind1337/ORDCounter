@@ -50,7 +50,7 @@
         android:layout_marginTop="24dp"
         android:background="@drawable/txtborder"
         android:clickable="true"
-        android:focusable="auto"
+        android:focusable="true"
         android:onClick="errorNoDates"
         android:textAllCaps="false"
         android:textSize="18sp"
