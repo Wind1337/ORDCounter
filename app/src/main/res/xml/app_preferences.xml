@@ -2,11 +2,11 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <PreferenceCategory app:title="NOTIFICATIONS">
+    <!--<PreferenceCategory app:title="NOTIFICATIONS">
         <SwitchPreferenceCompat
             app:key="notifications"
             app:title="Enable message notifications"/>
-    </PreferenceCategory>
+    </PreferenceCategory> -->
 
     <PreferenceCategory app:title="DATES">
         <Preference
@@ -18,12 +18,12 @@
             app:summary="Select your ORD Date"
             app:title="ORD Date" />
     </PreferenceCategory>
-    <PreferenceCategory app:title="FEEDBACK">
+    <!-- <PreferenceCategory app:title="FEEDBACK">
         <Preference
             app:key="feedback"
             app:title="Send feedback"
             app:summary="Report technical issues or suggest new features"/>
-    </PreferenceCategory>
+    </PreferenceCategory> -->
     <PreferenceCategory app:title="VERSION INFO">
         <Preference
             app:key="vernum"
