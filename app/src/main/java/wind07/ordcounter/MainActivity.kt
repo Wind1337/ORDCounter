@@ -49,6 +49,7 @@ class MainActivity : AppCompatActivity() {
         val orddate = sharedPref.getString("orddate", null)
         if(orddate == null)
         {
+            errorNoDates.setBackgroundResource(R.drawable.txtborder)
             numOrd.text = getString(R.string.notset)
             errorNoDates.text = getString(R.string.no_date_set)
         }
