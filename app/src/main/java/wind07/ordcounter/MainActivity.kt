@@ -71,6 +71,10 @@ class MainActivity : AppCompatActivity() {
             numOrd.text = getString(R.string.notset)
             errorNoDates.text = getString(R.string.no_date_set)
         }
+        else if (enlistdate == null){
+            errorNoDates.text = "Click here to set an enlistment date"
+            errorNoDates.setBackgroundResource(R.drawable.txtborder)
+        }
         else{
             val format = SimpleDateFormat("dd/MM/yyyy")
             val ordDays = (TimeUnit.DAYS.convert(format.parse(orddate).time - todaydate.time, TimeUnit.MILLISECONDS)).toDouble()
