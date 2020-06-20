@@ -54,6 +54,7 @@ class MainActivity : AppCompatActivity() {
             errorNoDates.text = getString(R.string.no_date_set)
         }
         else{
+            errorNoDates.setBackgroundResource(0)
             val todaydate = Date()
             val format = SimpleDateFormat("dd/MM/yyyy")
             val days = TimeUnit.DAYS.convert(format.parse(orddate).time - todaydate.time, TimeUnit.MILLISECONDS)
@@ -76,6 +77,7 @@ class MainActivity : AppCompatActivity() {
             errorNoDates.setBackgroundResource(R.drawable.txtborder)
         }
         else{
+            errorNoDates.setBackgroundResource(0)
             val format = SimpleDateFormat("dd/MM/yyyy")
             val ordDays = (TimeUnit.DAYS.convert(format.parse(orddate).time - todaydate.time, TimeUnit.MILLISECONDS)).toDouble()
             val servicedays = (TimeUnit.DAYS.convert(format.parse(orddate).time - format.parse(enlistdate).time, TimeUnit.MILLISECONDS)).toDouble()
