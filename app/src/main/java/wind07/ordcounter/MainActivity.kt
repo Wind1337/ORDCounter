@@ -8,13 +8,18 @@ import android.animation.ObjectAnimator
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
+import com.loopj.android.http.JsonHttpResponseHandler
+import com.loopj.android.http.RequestParams
+import cz.msebera.android.httpclient.Header
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
+import org.json.JSONObject
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -22,6 +27,7 @@ import kotlin.math.ceil
 
 
 class MainActivity : AppCompatActivity() {
+    lateinit var todayQuote: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,11 +36,13 @@ class MainActivity : AppCompatActivity() {
 
         calOrdDays()
         calProgress()
+        todayQuote = "The quote is still initialising"
+        getQuote()
 
-        /* fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+        fab.setOnClickListener{ view ->
+            Snackbar.make(view, todayQuote, 6000)
                 .setAction("Action", null).show()
-        } */
+        }
     }
 
     override fun onResume() {
@@ -88,6 +96,32 @@ class MainActivity : AppCompatActivity() {
             ordPercent.text = ("$serviceprogress% completed")
         }
 
+    }
+
+    private fun getQuote() {
+        val apiParams = RequestParams()
+        apiParams.put("language", "en")
+        APIWrapper.get("qod", apiParams, object:JsonHttpResponseHandler()
+        {
+            override fun onSuccess(statusCode: Int, headers: Array<Header>?, response: JSONObject?) {
+                Log.d("qotdJSONDebug", "look: " + response!!.toString())
+                var obj = response
+                val contents = response.getJSONObject("contents")
+                val quotes = contents.getJSONArray("quotes")
+                val quotesObj = quotes.getJSONObject(0)
+                val qotd = quotesObj.getString("quote")
+                val author = quotesObj.getString("author")
+                Log.d("qotdJSONDebug", "$qotd - $author")
+                val combinedQuote = "$qotd - $author"
+                todayQuote = combinedQuote
+            }
+            override fun onFailure(statusCode: Int, headers: Array<Header>?, e: Throwable, response: JSONObject?)
+            {
+                Log.d("qotdJSONDebug", "FAIL: " + response!!.toString())
+                val errorMessage = "There was an issue with retrieving today's quote"
+                todayQuote = errorMessage
+            }
+        })
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
