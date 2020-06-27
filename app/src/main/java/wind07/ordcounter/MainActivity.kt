@@ -55,18 +55,22 @@ class MainActivity : AppCompatActivity() {
     private fun calOrdDays (){
         val sharedPref: SharedPreferences = getSharedPreferences("wind07.ordcounter", 0)
         val orddate = sharedPref.getString("orddate", null)
-        if(orddate == null)
-        {
-            errorNoDates.setBackgroundResource(R.drawable.txtborder)
-            numOrd.text = getString(R.string.notset)
-            errorNoDates.text = getString(R.string.no_date_set)
-        }
-        else{
-            errorNoDates.setBackgroundResource(0)
-            val todaydate = Date()
-            val format = SimpleDateFormat("dd/MM/yyyy")
-            val days = TimeUnit.DAYS.convert(format.parse(orddate).time - todaydate.time, TimeUnit.MILLISECONDS)
-            numOrd.text = days.toString()
+        when (orddate) {
+            null -> {
+                errorNoDates.setBackgroundResource(R.drawable.txtborder)
+                numOrd.text = getString(R.string.notset)
+                errorNoDates.text = getString(R.string.no_date_set)
+            }
+            else -> {
+                errorNoDates.setBackgroundResource(0)
+                val todaydate = Date()
+                val format = SimpleDateFormat("dd/MM/yyyy")
+                val days = TimeUnit.DAYS.convert(
+                    format.parse(orddate).time - todaydate.time,
+                    TimeUnit.MILLISECONDS
+                )
+                numOrd.text = days.toString()
+            }
         }
     }
 
@@ -75,25 +79,26 @@ class MainActivity : AppCompatActivity() {
         val enlistdate = sharedPref.getString("enlistdate", null)
         val todaydate = Date()
         val orddate = sharedPref.getString("orddate", null)
-        if(orddate == null)
-        {
-            numOrd.text = getString(R.string.notset)
-            errorNoDates.text = getString(R.string.no_date_set)
-        }
-        else if (enlistdate == null){
-            errorNoDates.text = "Click here to set an enlistment date"
-            errorNoDates.setBackgroundResource(R.drawable.txtborder)
-        }
-        else{
-            errorNoDates.setBackgroundResource(0)
-            val format = SimpleDateFormat("dd/MM/yyyy")
-            val ordDays = (TimeUnit.DAYS.convert(format.parse(orddate).time - todaydate.time, TimeUnit.MILLISECONDS)).toDouble()
-            val servicedays = (TimeUnit.DAYS.convert(format.parse(orddate).time - format.parse(enlistdate).time, TimeUnit.MILLISECONDS)).toDouble()
-            val serviceprogress = (ceil(100 -((ordDays/servicedays) * 100))).toInt()
-            ObjectAnimator.ofInt(progressBar, "progress", serviceprogress)
-                .setDuration(600)
-                .start()
-            ordPercent.text = ("$serviceprogress% completed")
+        when {
+            orddate == null -> {
+                numOrd.text = getString(R.string.notset)
+                errorNoDates.text = getString(R.string.no_date_set)
+            }
+            enlistdate == null -> {
+                errorNoDates.text = "Click here to set an enlistment date"
+                errorNoDates.setBackgroundResource(R.drawable.txtborder)
+            }
+            else -> {
+                errorNoDates.setBackgroundResource(0)
+                val format = SimpleDateFormat("dd/MM/yyyy")
+                val ordDays = (TimeUnit.DAYS.convert(format.parse(orddate).time - todaydate.time, TimeUnit.MILLISECONDS)).toDouble()
+                val servicedays = (TimeUnit.DAYS.convert(format.parse(orddate).time - format.parse(enlistdate).time, TimeUnit.MILLISECONDS)).toDouble()
+                val serviceprogress = (ceil(100 -((ordDays/servicedays) * 100))).toInt()
+                ObjectAnimator.ofInt(progressBar, "progress", serviceprogress)
+                    .setDuration(600)
+                    .start()
+                ordPercent.text = ("$serviceprogress% completed")
+            }
         }
 
     }
