@@ -8,5 +8,6 @@
     <!--MainActivity.kt-->
     <string name="notset">Not Set</string>
     <string name="title_activity_settings">Settings</string>
-    <string name="no_date_set">Click here to set enlistment and ORD dates</string>
+    <string name="no_dates_set">Click here to set enlistment and ORD dates</string>
+    <string name="no_enlist_date_set">Click here to set an enlistment date</string>
 </resources>

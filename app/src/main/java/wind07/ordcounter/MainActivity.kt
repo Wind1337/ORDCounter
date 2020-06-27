@@ -59,7 +59,7 @@ class MainActivity : AppCompatActivity() {
             null -> {
                 errorNoDates.setBackgroundResource(R.drawable.txtborder)
                 numOrd.text = getString(R.string.notset)
-                errorNoDates.text = getString(R.string.no_date_set)
+                errorNoDates.text = getString(R.string.no_dates_set)
             }
             else -> {
                 errorNoDates.setBackgroundResource(0)
@@ -82,10 +82,10 @@ class MainActivity : AppCompatActivity() {
         when {
             orddate == null -> {
                 numOrd.text = getString(R.string.notset)
-                errorNoDates.text = getString(R.string.no_date_set)
+                errorNoDates.text = getString(R.string.no_dates_set)
             }
             enlistdate == null -> {
-                errorNoDates.text = "Click here to set an enlistment date"
+                errorNoDates.text = getString(R.string.no_enlist_date_set)
                 errorNoDates.setBackgroundResource(R.drawable.txtborder)
             }
             else -> {
@@ -110,7 +110,6 @@ class MainActivity : AppCompatActivity() {
         {
             override fun onSuccess(statusCode: Int, headers: Array<Header>?, response: JSONObject?) {
                 Log.d("qotdJSONDebug", "look: " + response!!.toString())
-                var obj = response
                 val contents = response.getJSONObject("contents")
                 val quotes = contents.getJSONArray("quotes")
                 val quotesObj = quotes.getJSONObject(0)
