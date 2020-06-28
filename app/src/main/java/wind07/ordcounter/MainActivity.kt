@@ -22,6 +22,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 import org.json.JSONObject
 import java.text.SimpleDateFormat
+import java.time.LocalDate
 import java.util.*
 import java.util.concurrent.TimeUnit
 import kotlin.math.ceil
@@ -29,16 +30,33 @@ import kotlin.math.ceil
 
 class MainActivity : AppCompatActivity() {
     lateinit var todayQuote: String
+    lateinit var quoteCAA: LocalDate
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
-
+        val sharedPref: SharedPreferences = getSharedPreferences("wind07.ordcounter", 0)
+        val cachedQuoteCAA = sharedPref.getString("quoteCAA", null)
+        val cachedQuote = sharedPref.getString("cachedQuote", null)
+        if (cachedQuote == null){
+            todayQuote = "The quote is still initialising"
+            getQuote()
+        }
+        else {
+            quoteCAA = LocalDate.parse(cachedQuoteCAA)
+            val today = LocalDate.now()
+            if (quoteCAA != today){
+                todayQuote = "The quote is still initialising"
+                getQuote()
+            }
+            else{
+                Log.d ("INFO", "Valid cached quote found! Using cached quote!")
+                todayQuote = cachedQuote
+            }
+        }
         calOrdDays()
         calProgress()
-        todayQuote = "The quote is still initialising"
-        getQuote()
         fab.setOnClickListener{ view ->
             Snackbar.make(view, todayQuote, 6000).also{
                 val snackView = it.view
@@ -123,6 +141,8 @@ class MainActivity : AppCompatActivity() {
                 Log.d("qotdJSONDebug", "$qotd - $author")
                 val combinedQuote = "$qotd - $author"
                 todayQuote = combinedQuote
+                val caa = LocalDate.now()
+                storeQuote(todayQuote, caa)
             }
             override fun onFailure(statusCode: Int, headers: Array<Header>?, e: Throwable, response: JSONObject?)
             {
@@ -138,6 +158,15 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         })
+    }
+
+    private fun storeQuote(todayQuote: String, quoteCAA: LocalDate){
+        val quoteDate = quoteCAA.toString()
+        val sharedPref: SharedPreferences = getSharedPreferences("wind07.ordcounter", 0)
+        val editor = sharedPref.edit()
+        editor.putString("cachedQuote", todayQuote)
+        editor.putString("quoteCAA", quoteDate)
+        editor.apply()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
