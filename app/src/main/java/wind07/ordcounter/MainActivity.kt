@@ -12,6 +12,7 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
 import com.loopj.android.http.JsonHttpResponseHandler
@@ -38,10 +39,14 @@ class MainActivity : AppCompatActivity() {
         calProgress()
         todayQuote = "The quote is still initialising"
         getQuote()
-
         fab.setOnClickListener{ view ->
-            Snackbar.make(view, todayQuote, 6000)
-                .setAction("Action", null).show()
+            Snackbar.make(view, todayQuote, 6000).also{
+                val snackView = it.view
+                val textView = snackView.findViewById<TextView>(com.google.android.material.R.id.snackbar_text)
+                textView.maxLines = 5
+            }
+                .setAction("Action", null)
+                .show()
         }
     }
 
@@ -122,8 +127,15 @@ class MainActivity : AppCompatActivity() {
             override fun onFailure(statusCode: Int, headers: Array<Header>?, e: Throwable, response: JSONObject?)
             {
                 Log.d("qotdJSONDebug", "FAIL: " + response!!.toString())
-                val errorMessage = "There was an issue with retrieving today's quote"
-                todayQuote = errorMessage
+                val contents = response.getJSONObject("error")
+                val errorCode = contents.getString("code")
+                todayQuote = if (errorCode == "429"){
+                    val errorMessage = "You are currently rate-limited by the API server. Please try again in 1 hour."
+                    errorMessage
+                } else {
+                    val errorMessage = "There was an issue with retrieving today's quote"
+                    errorMessage
+                }
             }
         })
     }
