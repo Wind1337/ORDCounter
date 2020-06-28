@@ -9,6 +9,6 @@ It is ~~probably~~ a steaming hot pile of garbage that I cannot be bothered to i
 
 Go ahead, laugh at my code. Its a joke.
 
-minsdk 21
+minsdk 26
 
 targetsdk 29
