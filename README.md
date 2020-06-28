@@ -11,4 +11,4 @@ Go ahead, laugh at my code. Its a joke.
 
 minsdk 26
 
-targetsdk 29
+targetsdk 30
