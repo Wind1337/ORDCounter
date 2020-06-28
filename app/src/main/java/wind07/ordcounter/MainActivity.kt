@@ -39,20 +39,26 @@ class MainActivity : AppCompatActivity() {
         val sharedPref: SharedPreferences = getSharedPreferences("wind07.ordcounter", 0)
         val cachedQuoteCAA = sharedPref.getString("quoteCAA", null)
         val cachedQuote = sharedPref.getString("cachedQuote", null)
-        if (cachedQuote == null){
-            todayQuote = "The quote is still initialising"
-            getQuote()
-        }
-        else {
-            quoteCAA = LocalDate.parse(cachedQuoteCAA)
-            val today = LocalDate.now()
-            if (quoteCAA != today){
+        when (cachedQuote) {
+            null -> {
+                Log.d("INFO", "Quote not found. Fetching quote.")
                 todayQuote = "The quote is still initialising"
                 getQuote()
             }
-            else{
-                Log.d ("INFO", "Valid cached quote found! Using cached quote!")
-                todayQuote = cachedQuote
+            else -> {
+                quoteCAA = LocalDate.parse(cachedQuoteCAA)
+                val today = LocalDate.now()
+                when {
+                    quoteCAA != today -> {
+                        Log.d("INFO", "Quote out of date. Fetching quote.")
+                        todayQuote = "The quote is still initialising"
+                        getQuote()
+                    }
+                    else -> {
+                        Log.d("INFO", "Valid cached quote found! Using cached quote!")
+                        todayQuote = cachedQuote
+                    }
+                }
             }
         }
         calOrdDays()
@@ -132,7 +138,7 @@ class MainActivity : AppCompatActivity() {
         APIWrapper.get("qod", apiParams, object:JsonHttpResponseHandler()
         {
             override fun onSuccess(statusCode: Int, headers: Array<Header>?, response: JSONObject?) {
-                Log.d("qotdJSONDebug", "look: " + response!!.toString())
+                Log.d("qotdJSONDebug", "SUCCESS: " + response!!.toString())
                 val contents = response.getJSONObject("contents")
                 val quotes = contents.getJSONArray("quotes")
                 val quotesObj = quotes.getJSONObject(0)
