@@ -41,7 +41,7 @@ public class DatePickerFragmentOrd extends DialogFragment implements DatePickerD
         }
 
         // Create a new instance of DatePickerDialog and return it
-        return new DatePickerDialog(Objects.requireNonNull(getActivity()), this, year, month, day);
+        return new DatePickerDialog(requireActivity(), this, year, month, day);
     }
 
     public void onDateSet(DatePicker view, int year, int month, int day) {

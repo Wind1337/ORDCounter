@@ -1,6 +1,5 @@
 package wind07.ordcounter;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.DialogFragment;
