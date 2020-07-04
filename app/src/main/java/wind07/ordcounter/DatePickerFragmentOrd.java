@@ -44,8 +44,6 @@ public class DatePickerFragmentOrd extends DialogFragment implements DatePickerD
     }
 
     public void onDateSet(DatePicker view, int year, int month, int day) {
-        SettingsFragment settingsFragment = new SettingsFragment();
-        String type = settingsFragment.type;
         month += 1;
         String date = (day + "/" + month + "/" + year);
         SharedPreferences sharedPref = getActivity().getSharedPreferences("wind07.ordcounter", 0);

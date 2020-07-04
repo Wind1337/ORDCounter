@@ -16,9 +16,6 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         setPreferencesFromResource(R.xml.app_preferences, rootKey);
         String buildNum = Integer.toString(BuildConfig.VERSION_CODE);
         String versionNum = BuildConfig.VERSION_NAME;
-        SharedPreferences sharedPref = getActivity().getSharedPreferences("wind07.ordcounter", 0);
-        final String enlistdate = sharedPref.getString("enlistdate", null);
-        final String orddate = sharedPref.getString("orddate", null);
         Preference prefVerNum = findPreference("vernum");
         if (prefVerNum != null) {
             prefVerNum.setSummary(versionNum);
@@ -27,6 +24,15 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         if (prefBuildNum != null) {
             prefBuildNum.setSummary(buildNum);
         }
+        setPrefSummary();
+        ordPrefListener();
+        enlistPrefListener();
+    }
+
+    public void setPrefSummary(){
+        SharedPreferences sharedPref = getActivity().getSharedPreferences("wind07.ordcounter", 0);
+        final String enlistdate = sharedPref.getString("enlistdate", null);
+        final String orddate = sharedPref.getString("orddate", null);
         Preference enlistdatePreference = findPreference("enlistdate");
         Preference orddatePreference = findPreference("orddate");
         if (enlistdatePreference != null) {
@@ -51,8 +57,6 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                 }
             });
         }
-        ordPrefListener();
-        enlistPrefListener();
     }
 
     public void ordPrefListener(){
@@ -79,6 +83,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                 return true;
             }
         });
+        setPrefSummary();
     }
 
     public void showDatePickerDialog() {
