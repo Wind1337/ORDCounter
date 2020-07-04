@@ -84,13 +84,11 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     public void showDatePickerDialog() {
         if(type == "orddate") {
             DialogFragment newFragment = new DatePickerFragmentOrd();
-            assert getFragmentManager() != null;
-            newFragment.show(getFragmentManager(), "datePicker");
+            newFragment.show(getParentFragmentManager(), "datePicker");
         }
         else{
             DialogFragment newFragment = new DatePickerFragmentEnlist();
-            assert getFragmentManager() != null;
-            newFragment.show(getFragmentManager(), "datePicker");
+            newFragment.show(getParentFragmentManager(), "datePicker");
         }
     }
 }
