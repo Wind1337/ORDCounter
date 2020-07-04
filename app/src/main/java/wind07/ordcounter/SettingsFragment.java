@@ -83,7 +83,6 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                 return true;
             }
         });
-        setPrefSummary();
     }
 
     public void showDatePickerDialog() {
