@@ -10,4 +10,8 @@
     <string name="title_activity_settings">Settings</string>
     <string name="no_dates_set">Click here to set enlistment and ORD dates</string>
     <string name="no_enlist_date_set">Click here to set an enlistment date</string>
+
+    <!--SettingsFragment.java-->
+    <string name="pref_sum_no_enlist_date_set">Set your enlistment date</string>
+    <string name="pref_sum_no_ord_date_set">Set your ORD date</string>
 </resources>

@@ -1,5 +1,6 @@
 package wind07.ordcounter;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.DialogFragment;
@@ -15,6 +16,9 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         setPreferencesFromResource(R.xml.app_preferences, rootKey);
         String buildNum = Integer.toString(BuildConfig.VERSION_CODE);
         String versionNum = BuildConfig.VERSION_NAME;
+        SharedPreferences sharedPref = getActivity().getSharedPreferences("wind07.ordcounter", 0);
+        final String enlistdate = sharedPref.getString("enlistdate", null);
+        final String orddate = sharedPref.getString("orddate", null);
         Preference prefVerNum = findPreference("vernum");
         if (prefVerNum != null) {
             prefVerNum.setSummary(versionNum);
@@ -23,7 +27,30 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         if (prefBuildNum != null) {
             prefBuildNum.setSummary(buildNum);
         }
-
+        Preference enlistdatePreference = findPreference("enlistdate");
+        Preference orddatePreference = findPreference("orddate");
+        if (enlistdatePreference != null) {
+            enlistdatePreference.setSummaryProvider(new Preference.SummaryProvider<Preference>() {
+                @Override
+                public CharSequence provideSummary(Preference preference) {
+                    if (enlistdate == null){
+                        return getString(R.string.pref_sum_no_enlist_date_set);
+                    }
+                    return enlistdate;
+                }
+            });
+        }
+        if (orddatePreference != null) {
+            orddatePreference.setSummaryProvider(new Preference.SummaryProvider<Preference>() {
+                @Override
+                public CharSequence provideSummary(Preference preference) {
+                    if (orddate == null){
+                        return getString(R.string.pref_sum_no_ord_date_set);
+                    }
+                    return orddate;
+                }
+            });
+        }
         ordPrefListener();
         enlistPrefListener();
     }
