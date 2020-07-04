@@ -30,7 +30,7 @@ import kotlin.math.ceil
 
 class MainActivity : AppCompatActivity() {
     lateinit var todayQuote: String
-    lateinit var quoteCAA: LocalDate
+    private lateinit var quoteCAA: LocalDate
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -93,7 +93,7 @@ class MainActivity : AppCompatActivity() {
             else -> {
                 errorNoDates.setBackgroundResource(0)
                 val todaydate = Date()
-                val format = SimpleDateFormat("dd/MM/yyyy")
+                val format = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
                 val days = TimeUnit.DAYS.convert(
                     format.parse(orddate).time - todaydate.time,
                     TimeUnit.MILLISECONDS
@@ -119,7 +119,7 @@ class MainActivity : AppCompatActivity() {
             }
             else -> {
                 errorNoDates.setBackgroundResource(0)
-                val format = SimpleDateFormat("dd/MM/yyyy")
+                val format = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
                 val ordDays = (TimeUnit.DAYS.convert(format.parse(orddate).time - todaydate.time, TimeUnit.MILLISECONDS)).toDouble()
                 val servicedays = (TimeUnit.DAYS.convert(format.parse(orddate).time - format.parse(enlistdate).time, TimeUnit.MILLISECONDS)).toDouble()
                 val serviceprogress = (ceil(100 -((ordDays/servicedays) * 100))).toInt()
