@@ -7,7 +7,7 @@ apply plugin: 'kotlin-android-extensions'
 android {
     compileSdkVersion 30
     buildToolsVersion "29.0.3"
-    def gitCommitCount = "git rev-parse --short HEAD".execute().text.trim()
+    def gitCommitHash = "git rev-parse --short HEAD".execute().text.trim()
     defaultConfig {
         applicationId "wind07.ordcounter"
         minSdkVersion 26
@@ -18,12 +18,13 @@ android {
     }
     buildTypes {
         debug{
-            versionNameSuffix "-debug.${gitCommitCount}"
+            versionNameSuffix "-debug.${gitCommitHash}"
         }
         release {
             versionNameSuffix "-release"
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            zipAlignEnabled true
         }
     }
 }
