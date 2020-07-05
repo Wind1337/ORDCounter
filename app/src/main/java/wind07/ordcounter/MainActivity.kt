@@ -21,7 +21,6 @@ import cz.msebera.android.httpclient.Header
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 import org.json.JSONObject
-import java.lang.Exception
 import java.lang.NullPointerException
 import java.text.SimpleDateFormat
 import java.time.LocalDate
