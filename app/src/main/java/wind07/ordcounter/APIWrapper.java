@@ -3,7 +3,7 @@ package wind07.ordcounter;
 import com.loopj.android.http.*;
 
 public class APIWrapper {
-    private static final String BASE_URL = "https://quotes.rest/";
+    private static final String BASE_URL = "";
 
     private static AsyncHttpClient client = new AsyncHttpClient();
 

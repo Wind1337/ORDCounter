@@ -136,7 +136,7 @@ class MainActivity : AppCompatActivity() {
     private fun getQuote() {
         val apiParams = RequestParams()
         apiParams.put("language", "en")
-        APIWrapper.get("qod", apiParams, object:JsonHttpResponseHandler()
+        APIWrapper.get("https://quotes.rest/qod", apiParams, object:JsonHttpResponseHandler()
         {
             override fun onSuccess(statusCode: Int, headers: Array<Header>?, response: JSONObject?) {
                 Log.d("qotdJSONDebug", "SUCCESS: " + response!!.toString())
