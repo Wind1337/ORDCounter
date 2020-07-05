@@ -152,15 +152,23 @@ class MainActivity : AppCompatActivity() {
             }
             override fun onFailure(statusCode: Int, headers: Array<Header>?, e: Throwable, response: JSONObject?)
             {
-                Log.d("qotdJSONDebug", "FAIL: " + response!!.toString())
-                val contents = response.getJSONObject("error")
-                val errorCode = contents.getString("code")
-                todayQuote = if (errorCode == "429"){
-                    val errorMessage = "You are currently rate-limited by the API server. Please try again in 1 hour."
-                    errorMessage
-                } else {
-                    val errorMessage = "There was an issue with retrieving today's quote"
-                    errorMessage
+                if (response == null){
+                    Log.d("qotdJSONDebug", "FAIL: null response received")
+                    val errorMessage = "There was an issue with retrieving today's quote (null response received)"
+                    todayQuote = errorMessage
+                }
+                else {
+                    Log.d("qotdJSONDebug", "FAIL: $response")
+                    val contents = response.getJSONObject("error")
+                    val errorCode = contents.getString("code")
+                    todayQuote = if (errorCode == "429") {
+                        val errorMessage = "You are currently rate-limited by the API server. Please try again in 1 hour."
+                        errorMessage
+                    }
+                    else {
+                        val errorMessage = "There was an issue with retrieving today's quote (Unhandled error code)"
+                        errorMessage
+                    }
                 }
             }
         })
