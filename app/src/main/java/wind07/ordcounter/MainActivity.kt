@@ -21,6 +21,8 @@ import cz.msebera.android.httpclient.Header
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 import org.json.JSONObject
+import java.lang.Exception
+import java.lang.NullPointerException
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.util.*
@@ -152,13 +154,8 @@ class MainActivity : AppCompatActivity() {
             }
             override fun onFailure(statusCode: Int, headers: Array<Header>?, e: Throwable, response: JSONObject?)
             {
-                if (response == null){
-                    Log.d("qotdJSONDebug", "FAIL: null response received")
-                    val errorMessage = "There was an issue with retrieving today's quote (null response received)"
-                    todayQuote = errorMessage
-                }
-                else {
-                    Log.d("qotdJSONDebug", "FAIL: $response")
+                try{
+                    Log.d("qotdJSONDebug", "FAIL: " + response!!.toString())
                     val contents = response.getJSONObject("error")
                     val errorCode = contents.getString("code")
                     todayQuote = if (errorCode == "429") {
@@ -169,6 +166,11 @@ class MainActivity : AppCompatActivity() {
                         val errorMessage = "There was an issue with retrieving today's quote (Unhandled error code)"
                         errorMessage
                     }
+                }
+                catch (e: NullPointerException){
+                    Log.d("qotdJSONDebug", "FAIL: null response received")
+                    val errorMessage = "There was an issue with retrieving today's quote (null response received)"
+                    todayQuote = errorMessage
                 }
             }
         })
