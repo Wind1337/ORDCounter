@@ -5,8 +5,12 @@
 package wind07.ordcounter
 
 import android.animation.ObjectAnimator
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
@@ -14,14 +18,15 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.iid.FirebaseInstanceId
 import com.loopj.android.http.JsonHttpResponseHandler
 import com.loopj.android.http.RequestParams
 import cz.msebera.android.httpclient.Header
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 import org.json.JSONObject
-import java.lang.NullPointerException
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.util.*
@@ -62,6 +67,7 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+        createNotificationChannel()
         calOrdDays()
         calProgress()
         fab.setOnClickListener{ view ->
@@ -80,9 +86,10 @@ class MainActivity : AppCompatActivity() {
         errorNoDates.text = ""
         calOrdDays()
         calProgress()
+        getFirebaseToken()
     }
 
-    private fun calOrdDays (){
+    private fun calOrdDays (): Int{
         val sharedPref: SharedPreferences = getSharedPreferences("wind07.ordcounter", 0)
         val orddate = sharedPref.getString("orddate", null)
         when (orddate) {
@@ -90,6 +97,7 @@ class MainActivity : AppCompatActivity() {
                 errorNoDates.setBackgroundResource(R.drawable.txtborder)
                 numOrd.text = getString(R.string.notset)
                 errorNoDates.text = getString(R.string.no_dates_set)
+                return 0
             }
             else -> {
                 errorNoDates.setBackgroundResource(0)
@@ -100,6 +108,7 @@ class MainActivity : AppCompatActivity() {
                     TimeUnit.MILLISECONDS
                 )
                 numOrd.text = days.toString()
+                return days.toInt()
             }
         }
     }
@@ -202,8 +211,37 @@ class MainActivity : AppCompatActivity() {
             }
             else -> super.onOptionsItemSelected(item)
         }
+    }
 
+    fun getFirebaseToken(){
+        FirebaseInstanceId.getInstance().instanceId
+            .addOnCompleteListener(OnCompleteListener { task ->
+                if (!task.isSuccessful) {
+                    Log.w("WARNING", "getInstanceId failed", task.exception)
+                    return@OnCompleteListener
+                }
 
+                // Get new Instance ID token
+                val token = task.result?.token
+
+                // Log
+                val msg = token.toString()
+                Log.d("FIREBASE TOKEN:", msg)
+            })
+    }
+    private fun createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val name = "Push Notifications"
+            val descriptionText = "Push Notifications from FCM"
+            val importance = NotificationManager.IMPORTANCE_DEFAULT
+            val channel = NotificationChannel("FCM", name, importance).apply {
+                description = descriptionText
+            }
+            // Register the channel with the system
+            val notificationManager: NotificationManager =
+                getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(channel)
+        }
     }
 
     fun errorNoDates(view: View) {
