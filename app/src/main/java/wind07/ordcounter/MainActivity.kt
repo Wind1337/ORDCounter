@@ -89,7 +89,7 @@ class MainActivity : AppCompatActivity() {
         getFirebaseToken()
     }
 
-    private fun calOrdDays (): Int{
+    private fun calOrdDays (){
         val sharedPref: SharedPreferences = getSharedPreferences("wind07.ordcounter", 0)
         val orddate = sharedPref.getString("orddate", null)
         when (orddate) {
@@ -97,7 +97,6 @@ class MainActivity : AppCompatActivity() {
                 errorNoDates.setBackgroundResource(R.drawable.txtborder)
                 numOrd.text = getString(R.string.notset)
                 errorNoDates.text = getString(R.string.no_dates_set)
-                return 0
             }
             else -> {
                 errorNoDates.setBackgroundResource(0)
@@ -108,7 +107,6 @@ class MainActivity : AppCompatActivity() {
                     TimeUnit.MILLISECONDS
                 )
                 numOrd.text = days.toString()
-                return days.toInt()
             }
         }
     }
